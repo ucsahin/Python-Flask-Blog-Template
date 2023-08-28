@@ -1,0 +1,18 @@
+.content {
+    padding: 4rem 0;
+}
+
+.contact-wrap {
+    padding: 2rem 0;
+    box-shadow: 0 0px 20px 0 rgb(0 0 0 / 5%);
+    border: 1px solid #efefef;
+}
+
+.rounded-0 {
+    border-radius: 50px !important;
+    background-color: #00506b;
+}
+
+
+
+

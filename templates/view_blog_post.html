@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+  {% with messages = get_flashed_messages(category_filter=["blog_post"]) %}
+  {% if messages %}
+  {% for message in messages %}
+  <div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Message: </strong> {{message}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+  {% endwith %}
+
+
+  <div class="px-4 py-5 my-5 text-center">
+    <h1 class="display-5 fw-bold text-body-emphasis">{{blog_post.title}}</h1>
+    <h3 class="display-10 text-body-emphasis">Create by: <a href="{{url_for('users.about', user_id=blog_post.author.id)}}">{{blog_post.author.username}}</a></h3>
+    <h5 class="display-10 fw-light text-body-emphasis">Published: {{blog_post.creation_date.day}}-{{blog_post.creation_date.month}}-{{blog_post.creation_date.year}}</h5>
+    <div class="col-lg-6 mx-auto">
+      <p class="lead fs-3">{{blog_post.body_text}}</p>
+    </div>
+  </div>
+
+  {% if current_user == blog_post.author %}
+  <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+    <form method="POST" action="{{url_for('blog_posts.edit_blog_post', blog_post_id=blog_post.id)}}">
+        <button type="submit" class="btn btn-secondary btn-lg">Edit</button>
+    </form>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#deleteModal">
+      Delete
+    </button>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Warning</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Do you really want to delete the blog post?
+        </div>
+  
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <form method="POST" action="{{url_for('blog_posts.delete_blog_post', blog_post_id=blog_post.id)}}">
+            <button type="submit" class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</main>
+
+{% endblock %}
